@@ -15,7 +15,8 @@ public class MyF implements iF {
 	
 	private double effC;
 	private double effNeighbor;
-	Map<Edge,Double> eToEff;
+	
+	Map<String,Double> eToEff;
 	
 	public MyF(double effD,double effNeighbor) {
 		this.effC=effD;
@@ -37,7 +38,7 @@ public class MyF implements iF {
 		Double myScore = 0.0;
 		Set<Edge> edges= graph.getEdges();
 		for (Edge edge : edges) {
-			Double effEdge = eToEff.get(edge);
+			Double effEdge = eToEff.get(edge.getName());
 			myScore += edge.getWeiget()*(1-effEdge);
 		}		
 		return myScore;
@@ -52,46 +53,56 @@ public class MyF implements iF {
 	private void clacEff(Graph graph, Set<Edge> cover) { 
 		Set<Edge> edges=graph.getEdges();
 		//map between vertex to all his edges
-		Map<Vertex,Set<Edge>> mapVtoAdgs = graph.getmapVtoAdgs();
+		Map<String,Set<Edge>> mapVtoAdgs = graph.getmapVtoAdgs();
 		//start all effect at 0
 		for (Edge edge: edges)
-			eToEff.put(edge,0.0);
+			eToEff.put(edge.getName(),0.0);
 		
 		for (Edge edge: cover) {
-			Double cEff = eToEff.get(edge);
+			Double cEff = eToEff.get(edge.getName());
 			//if sum cEff+ effC < 1 then cEff += effC 
 			if((cEff+this.effC)<1){
 				cEff +=this.effC;
-				eToEff.put(edge,cEff);		
+				eToEff.put(edge.getName(),cEff);		
 			}
 			//max eff its 1
 			else{
-				eToEff.put(edge,1.0);			
+				eToEff.put(edge.getName(),1.0);			
 			}
 		//get from and to vertex of edge
 		Vertex from = edge.getFrom();
 		Vertex to = edge.getTo();
 			//make set of neighbors Vertex
 		Set<Edge> neighbors = new HashSet<>();
-		neighbors.addAll(mapVtoAdgs.get(from));
-		neighbors.addAll(mapVtoAdgs.get(to));
+		neighbors.addAll(mapVtoAdgs.get(from.getName()));
+		neighbors.addAll(mapVtoAdgs.get(to.getName()));
 		neighbors.remove(edge);
 		for (Edge e : neighbors) {
-				Double nEff = eToEff.get(e);
+				Double nEff = eToEff.get(e.getName());
 				//if sum nEff+ effNeighbor < 1 then nEff += effNeighbor 
 				if((nEff+this.effNeighbor)<1){
 					nEff +=this.effNeighbor;
-					eToEff.put(e,nEff);		
+					eToEff.put(e.getName(),nEff);		
 				}
 				//max eff its 1
 				else{
-					eToEff.put(e,1.0);			
+					eToEff.put(e.getName(),1.0);			
 				}
 			
 			}
 		
 	}
 	
+	}
+
+	//G'ets effect covered and effect Neighbor
+	@Override
+	public double getEffC() {
+		return effC;
+	}
+	@Override
+	public double getEffNeighbor() {
+		return effNeighbor;
 	}
 
 }

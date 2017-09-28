@@ -9,4 +9,7 @@ import graph.Vertex;
 public interface iF {
 	///Return score = sigma risk*(1-eff) -> eff = num get in C'tor of F
 	public  Double func(int T,Graph graph,Set<Edge> cover);
+	//gets the effect covered and effect Neighbor 
+	public double getEffC();
+	public double getEffNeighbor(); 
 }

@@ -22,7 +22,7 @@ public class RunTest {
 		graph.addEdge(new Edge(b, c, 7));
 		graph.addEdge(new Edge(c, b, 9));
 
-		for (Entry<Vertex, Set<Edge>> entry : graph.getmapVtoAdgs().entrySet()) {
+		for (Entry<String, Set<Edge>> entry : graph.getmapVtoAdgs().entrySet()) {
 			System.out.print(entry.getKey() + " ");
 			entry.getValue().forEach(v->System.out.print(v));
 			System.out.println();

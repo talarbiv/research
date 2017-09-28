@@ -18,11 +18,11 @@ public class Run {
 	public static void main(String[] args) {
 		
 		Graph graph = new Graph();
-		
+		/*
 		//Second graph
 		//create Vertexes
 		Vertex v1 = new Vertex("v1");
-		Vertex v2= new Vertex("v2");
+		Vertex v2 = new Vertex("v2");
 		Vertex v3 = new Vertex("v3");
 		Vertex v4 = new Vertex("v4");
 		Vertex v5 = new Vertex("v5");
@@ -63,50 +63,52 @@ public class Run {
 		pC.add(coverE3);
 		pC.add(coverE5);
 		
-		
-		/*first Graph
+		*/
+		//first Graph
 		//create Vertexes
 		Vertex z = new Vertex("z");
 		Vertex q = new Vertex("q");
 		Vertex r = new Vertex("r");
 		Vertex t = new Vertex("t");
 		//add Vertex to graph 
-		graph.addVertex(z);
-		graph.addVertex(q);
-		graph.addVertex(r);
-		graph.addVertex(t);
+		z=graph.addVertex(z);
+		q=graph.addVertex(q);
+		r=graph.addVertex(r);
+		t=graph.addVertex(t);
 		
 		//create Edges
 		Edge A = new Edge(q, r, 1,"A");
-		Edge Ar = new Edge(r, q, 1,"Ar");
-		Edge B = new Edge(r, t, 0.5,"B");
-		Edge C = new Edge(z, q, 0.5,"C");
-		Edge D = new Edge(z, t, 0.5,"D");
+		A=graph.addEdge(A);
+		/*Edge Ar = new Edge(r, q, 1,"Ar");
+		//Edge B = new Edge(r, t, 1,"B");//
+		Edge C = new Edge(t, z, 1,"C");//
+		Edge D = new Edge(z, t, 1,"D");//
 		//add Edges to graph 
-		graph.addEdge(A);
-		graph.addEdge(Ar);
-		graph.addEdge(B);
-		graph.addEdge(C);
-		graph.addEdge(D);
-	
+		Ar=graph.addEdge(Ar);
+		//B=graph.addEdge(B);
+		C=graph.addEdge(C);
+		D=graph.addEdge(D);
 		//Create possible coverage
 		Set<Edge> coverD = new HashSet<>();
 		coverD.add(D);
+		Set<Edge> coverC = new HashSet<>();
+		coverC.add(C);
+		Set<Edge> coverAr = new HashSet<>();
+		coverAr.add(Ar);	
+		//add possible coverage
+		pC.add(coverD);
+		pC.add(coverAr);
+		pC.add(coverC);
+	*/
+		Set<Set<Edge>> pC = new HashSet<>();
 		Set<Edge> coverA = new HashSet<>();
 		coverA.add(A);
-		Set<Edge> coverArAndA = new HashSet<>();
-		coverArAndA.add(Ar);
-		coverArAndA.add(A);		
-		//add possible coverage
-		Set<Set<Edge>> pC = new HashSet<>();
-		pC.add(coverD);
 		pC.add(coverA);
-		pC.add(coverArAndA);
-		*/
+		
 		
 		
 		final double effChosen = 0.36;
-		final double effNeighbor = 0.05;
+		final double effNeighbor = 0.18;
 		iF f = new MyF(effChosen , effNeighbor);
 		
 		//Print sum risk for each possible coverage (in pc - for debug)

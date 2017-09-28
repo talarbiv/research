@@ -2,6 +2,7 @@ package subModFullInf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -26,12 +27,42 @@ public class MyAlgFollowPerLead implements iAlgFollowPerLead {
 		//R it's R function in psodo code
 		//Map<Set<Edge>,Double> R = creatR(possibleC,randMap);
 		Map<Set<Edge>,Double> R = creatDemoR(possibleC,randMap);
+		
+		List<Set<Edge>> _linkList = new LinkedList<>();
 		for (int t = 1; t < T; t++) {
+			/***get a Graph after calculate the past(time effect) in this Formula risk = risk * (1-(EffC/2^k)) k=1 or 2. 
+			if we want to change the graph we need to do other fanc with real graph*/
+			Graph graphAfterEffC= calcChange(graph,_linkList,f);
 			//choose argmin of min sum of(ft(S)+R(S))) t value run between 1 to (t-1) CHANGE IT TO BINRY SEARCH
-			choosenList.add(argmin(possibleC,graph,f,t,R)); 
+			Set<Edge> lastChoose = argmin(possibleC,graphAfterEffC,f,t,R);
+			//add the last choose to start lincList
+			_linkList.add(0,lastChoose);
+			//here we take just the First two 
+			if(_linkList.size()>2)
+				_linkList = _linkList.subList(0,2);
+			//add the last choose to choosenList
+			choosenList.add(lastChoose); 
 		}
 
 		return choosenList;
+	}
+	/***get a Graph after calculate the past(time effect) in this Formula risk = risk * (1-(EffC/2^k)) k = {1,...,linkList size}. 
+	if we want to change the graph we need to do other fanc with real graph*/
+	private Graph calcChange(Graph graph, List<Set<Edge>> _linkList,iF f) {
+		Graph graphAfterEffC = new Graph(graph);
+		for (int i = 0; i < _linkList.size(); i++) {
+			//get the set then choose i time before this
+			Set<Edge> chIBefore = _linkList.get(i);
+			//Percent reduction (1-(EffC/2^i)) 
+			double percentR = 1 - (f.getEffC()/(Math.pow(2,i+1)));
+			for (Edge edge : graphAfterEffC.getEdges()) {
+				for (Edge e : chIBefore) {
+					if(e.equals(edge))
+						edge.setWeiget(edge.getWeiget()*percentR);
+				}
+			}
+		}
+		return graphAfterEffC;
 	}
 	private Set<Edge> argmin(Set<Set<Edge>> possibleC,Graph graph, iF f, int t, Map<Set<Edge>, Double> R) {
 		Set<Edge> result=null;

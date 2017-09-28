@@ -24,6 +24,11 @@ public class Edge {
 	public String toString() {
 		return name + ": from " + from + " to " + to + " weiget " + weiget;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		Edge e = (Edge) obj;
+		return e.getName().equals(this.name);
+	}
 	
 	//get's and set's
 	public Vertex getFrom() {
