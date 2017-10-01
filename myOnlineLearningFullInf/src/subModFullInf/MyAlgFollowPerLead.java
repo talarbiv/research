@@ -11,6 +11,8 @@ import java.util.Set;
 import graph.Edge;
 import graph.Graph;
 import graph.Vertex;
+import subModFullInf.FTimeC.MyTimeC;
+import subModFullInf.FTimeC.iFTimeC;
 import subModFullInf.FuncTS.iF;
 
 /**if we want to do somting with time we can change func-argmin*/ 
@@ -18,7 +20,7 @@ import subModFullInf.FuncTS.iF;
 public class MyAlgFollowPerLead implements iAlgFollowPerLead {
 
 	@Override
-	public List<Set<Edge>> MySubmodularFollowThePerturbedLeader(Double range, Graph graph, Set<Set<Edge>> possibleC,iF f, int T) throws Exception {
+	public List<Set<Edge>> MySubmodularFollowThePerturbedLeader(Double range, Graph graph, Set<Set<Edge>> possibleC,iF f, int T,iFTimeC timeC) throws Exception {
 		if (range<=0)
 			throw new Exception("Invalid range ");
 		List<Set<Edge>> choosenList = new ArrayList<>();
@@ -30,6 +32,7 @@ public class MyAlgFollowPerLead implements iAlgFollowPerLead {
 		
 		List<Set<Edge>> _linkList = new LinkedList<>();
 		for (int t = 1; t < T; t++) {
+			timeC.timeChange(graph, _linkList);
 			/***get a Graph after calculate the past(time effect) in this Formula risk = risk * (1-(EffC/2^k)) k=1 or 2. 
 			if we want to change the graph we need to do other fanc with real graph*/
 			Graph graphAfterEffC= calcChange(graph,_linkList,f);

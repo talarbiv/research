@@ -10,6 +10,8 @@ import graph.Graph;
 import graph.Vertex;
 import subModFullInf.MyAlgFollowPerLead;
 import subModFullInf.iAlgFollowPerLead;
+import subModFullInf.FTimeC.MyTimeC;
+import subModFullInf.FTimeC.iFTimeC;
 import subModFullInf.FuncTS.MyF;
 import subModFullInf.FuncTS.iF;
 
@@ -77,10 +79,11 @@ public class Run {
 		t=graph.addVertex(t);
 		
 		//create Edges
-		Edge A = new Edge(q, r, 1,"A");
+		Edge A = new Edge(q, r, 0.5,"A");
 		A=graph.addEdge(A);
+		Edge B = new Edge(z, t, 1,"B");
+		B=graph.addEdge(B);
 		/*Edge Ar = new Edge(r, q, 1,"Ar");
-		//Edge B = new Edge(r, t, 1,"B");//
 		Edge C = new Edge(t, z, 1,"C");//
 		Edge D = new Edge(z, t, 1,"D");//
 		//add Edges to graph 
@@ -104,6 +107,9 @@ public class Run {
 		Set<Edge> coverA = new HashSet<>();
 		coverA.add(A);
 		pC.add(coverA);
+		//Set<Edge> coverB = new HashSet<>();
+		//coverB.add(B);
+		//pC.add(coverB);
 		
 		
 		
@@ -118,8 +124,10 @@ public class Run {
 		
 		//Runs the algorithm and print the result
 		iAlgFollowPerLead alg =new MyAlgFollowPerLead();
+		iFTimeC timeC = new MyTimeC(0.01);
+		
 		try {
-			List<Set<Edge>> choosenList = alg.MySubmodularFollowThePerturbedLeader(10.0, graph, pC, f, 10);
+			List<Set<Edge>> choosenList = alg.MySubmodularFollowThePerturbedLeader(10.0, graph, pC, f, 30,timeC);
 			int count=0;
 			for (Set<Edge> set : choosenList) {
 				System.out.print("choose "+ (++count) +": ");
